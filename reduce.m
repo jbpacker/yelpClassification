@@ -18,15 +18,13 @@ addpath('matconvnet-1.0-beta18');
 train = readtable([dataPath, 'train.csv']);
 biz = readtable([dataPath, 'train_photo_to_biz_ids.csv']);
 
+cnt = 1;
 X = zeros(size(biz,1), 3+num_features);
-
  for b = 1:size(train,1)
     photo_ids = biz.photo_id(find(biz.business_id == train.business_id(b)));
     fprintf('business %5.0f: %2.0f of %2.0f\n', train.business_id(b), b, size(train,1));
     for i = 1:length(photo_ids)
-
         img = imread([dataPath, 'train_photos/', num2str(photo_ids(i)), '.jpg']);
-
         [classLabel, scores, batchTime] = cnnPredict(cnnModel, img, 'display', false);
         
         %for fun
@@ -34,9 +32,12 @@ X = zeros(size(biz,1), 3+num_features);
         
         %output format:
         % <instance_name>,<bag_name>,<label>,<value> ... <value>
-        X(i,1) = photo_ids(i);
-        X(i,2) = train.business_id(b);
-        X(i,3) = ~isempty(strfind(char(train.labels(b)), num2str(important_label)));
-        X(i,4:end) = scores';
+        X(cnt,1) = photo_ids(i);
+        X(cnt,2) = train.business_id(b);
+        X(cnt,3) = ~isempty(strfind(char(train.labels(b)), num2str(important_label)));
+        X(cnt,4:end) = scores';
+        cnt = cnt + 1;
     end
-end
+ end
+
+ csvwrite('base.data', X);
