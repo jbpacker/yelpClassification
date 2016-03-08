@@ -19,6 +19,7 @@ else
         insts = load(matrix_file);
     catch
         fprintf('RUN THE NAUGHTY PERL SCRIPT!\n')
+        fprintf('perl ./MILL/ReadInput.pl %s, filename\n');
     end
 end
         
