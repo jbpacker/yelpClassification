@@ -1,5 +1,6 @@
 # Data files
 data/*
+proj6/data/*
 
 # Windows default autosave extension
 *.asv
@@ -9,3 +10,6 @@ data/*
 
 # Compiled MEX binaries (all platforms)
 *.mex*
+
+# cNN libraries
+*.mat
