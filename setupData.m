@@ -15,15 +15,13 @@ function imdb = setupData(averageImage)
     imdb.images.id = zeros(1, num_images, 'uint16');
     imdb.images.biz = zeros(1, num_images, 'uint16');
     Kfolds = 10;
+    CV = cvpartition(1:num_businesses,'KFold',Kfolds);
     
-    % returns which bucket everythign goes into. Will have to do the
-    % grouping myself if I want to expand it past 2 folds.
-    setIdx = crossvalind('Kfold', num_businesses, Kfolds);
-
     counter = 1;
 
     %% populate struct
     for k = 1 %:Kfolds %for more testing!
+        testIdx = test(CV,k);
         for b = 1:size(train,1)
             photo_ids = biz.photo_id(find(biz.business_id == train.business_id(b)));
             fprintf('business %5.0f: %2.0f of %2.0f\n', train.business_id(b), b, size(train,1));
@@ -35,7 +33,7 @@ function imdb = setupData(averageImage)
 
                 %output into struct:
                 imdb.images.data(:,:,:,counter) = img;
-                if (setIdx(b) ~= k) %train
+                if (testIdx(b) == 0) %train
                     imdb.images.set(1,counter) = 1;
                 else %test
                     imdb.images.set(1,counter) = 2;
