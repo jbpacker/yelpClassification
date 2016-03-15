@@ -12,8 +12,8 @@ function imdb = setupData(averageImage)
     imdb.images.data = zeros(image_size(1), image_size(2), 3, num_images, 'single');
     imdb.images.labels = zeros(9, num_images, 'single');
     imdb.images.set = zeros(1, num_images, 'uint8');
-    imdb.images.id = zeros(1, num_images);
-    imdb.images.biz = zeros(1, num_images);
+    imdb.images.id = zeros(1, num_images, 'uint16');
+    imdb.images.biz = zeros(1, num_images, 'uint16');
     Kfolds = 10;
     
     % returns which bucket everythign goes into. Will have to do the
